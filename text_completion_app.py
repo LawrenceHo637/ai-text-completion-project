@@ -1,11 +1,14 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, Gemma3ForCausalLM
+import torch
 import logging
 import time
 
-# Load AI model (https://huggingface.co/deepseek-ai/DeepSeek-R1)
-tokenizer = AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-R1", trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained("deepseek-ai/DeepSeek-R1", trust_remote_code=True)
-model.eval()
+# Load AI model (https://huggingface.co/google/gemma-3-1b-it)
+model_id = "google/gemma-3-1b-it"
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = Gemma3ForCausalLM.from_pretrained(model_id).to(device).eval()
 
 # Set up logger for displaying error messages
 logging.basicConfig(format='%(message)s')
@@ -14,13 +17,12 @@ option = 1
 
 # Dictionary to store the model's parameter settings
 settings = {
-    "max_new_tokens": 200,      # Controls response length
+    "max_new_tokens": 150,      # Controls response length
     "do_sample": True,          # Enable sampling for creativity
     "top_k": 50,                # Top-k sampling (randomized narrowing)  deterministic vs variety
     "top_p": 0.95,              # Nucleus sampling (0 - 1), deterministic vs diversity
-    "temperature": 0.8,         # Controls randomness
+    "temperature": 0.7,         # Controls randomness
     "repetition_penalty": 1.1,  # Helps avoid repetition by penalizing repeated phrases
-    "num_return_sequences": 1   # Number of outputs generated
 }
 
 while option != 3:
@@ -44,7 +46,11 @@ while option != 3:
         # Take user prompt and pass it to the model
         try:
             prompt = input("Enter a prompt: ")
-            inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+            if prompt.replace(" ", "") == "":
+                raise ValueError
+
+            inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
             outputs = model.generate(
                 **inputs,
@@ -54,19 +60,21 @@ while option != 3:
                 top_p=settings["top_p"],
                 temperature=settings["temperature"],
                 repetition_penalty=settings["repetition_penalty"],
-                num_return_sequences=settings["num_return_sequences"]
+                pad_token_id=tokenizer.eos_token_id
             )
 
             generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
             print(generated_text)
         except ValueError:
-            pass
+            log.warning("Empty Input!\n")
+            time.sleep(0.5)
+            continue
 
     elif option == 2:
         # Change model generation settings
         parameter = 1
 
-        while parameter != 8:
+        while parameter != 7:
             # Show which parameters the user can change
             try:
                 print("Which setting would you like to change?")
@@ -76,14 +84,13 @@ while option != 3:
                 print("\t4. top_p")
                 print("\t5. temperature")
                 print("\t6. repetition_penalty")
-                print("\t7. num_return_sequences")
-                print("\t8. Exit")
-                parameter = int(input("Pick one of the above.\nValid options are [1, 2, 3, 4, 5, 6, 7, 8]: "))
+                print("\t7. Exit")
+                parameter = int(input("Pick one of the above.\nValid options are [1, 2, 3, 4, 5, 6, 7]: "))
 
-                if parameter < 1 or parameter > 8:
+                if parameter < 1 or parameter > 7:
                     raise ValueError
             except ValueError:
-                log.warning("Invalid Selection! Please enter a valid number (1, 2, 3, 4, 5, 6, 7, 8).\n")
+                log.warning("Invalid Selection! Please enter a valid number (1, 2, 3, 4, 5, 6, 7).\n")
                 time.sleep(0.5)
                 continue
 
@@ -108,7 +115,7 @@ while option != 3:
                     print(f"do_sample\t current value: {settings["do_sample"]}")
                     change = input("Enter T/F: ").upper()
 
-                    if change != "T" or change != "F":
+                    if change != "T" and change != "F":
                         raise ValueError
                 except ValueError:
                     log.warning("Invalid Input! Valid input is T or F.\n")
@@ -180,22 +187,8 @@ while option != 3:
                 else:
                     settings["repetition_penalty"] = change
 
-            elif parameter == 7:
-                # Change num_return_sequences
-                try:
-                    print(f"num_return_sequences\t current value: {settings["num_return_sequences"]}")
-                    change = int(input("Enter a number: "))
-
-                    if change < 1:
-                        raise ValueError
-                except ValueError:
-                    log.warning("Invalid Input! Please enter a whole number greater than or equal to 1.\n")
-                    time.sleep(0.5)
-                    continue
-                else:
-                    settings["num_return_sequences"] = change
-
             else:
+                print("")
                 break
     else:
         print("Goodbye!")
