@@ -44,31 +44,37 @@ while option != 3:
     # Execute the chosen option
     if option == 1:
         # Take user prompt and pass it to the model
-        try:
-            prompt = input("Enter a prompt: ")
+        prompt = ""
+        while prompt != "exit":
+            try:
+                prompt = input("Enter a prompt. To exit, type 'exit': ")
 
-            if prompt.replace(" ", "") == "":
-                raise ValueError
+                if prompt.replace(" ", "") == "":
+                    raise ValueError
 
-            inputs = tokenizer(prompt, return_tensors="pt").to(device)
+                if prompt.lower() == "exit":
+                    print("")
+                    break
 
-            outputs = model.generate(
-                **inputs,
-                max_new_tokens=settings["max_new_tokens"],
-                do_sample=settings["do_sample"],
-                top_k=settings["top_k"],
-                top_p=settings["top_p"],
-                temperature=settings["temperature"],
-                repetition_penalty=settings["repetition_penalty"],
-                pad_token_id=tokenizer.eos_token_id
-            )
+                inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
-            generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-            print(generated_text)
-        except ValueError:
-            log.warning("Empty Input!\n")
-            time.sleep(0.5)
-            continue
+                outputs = model.generate(
+                    **inputs,
+                    max_new_tokens=settings["max_new_tokens"],
+                    do_sample=settings["do_sample"],
+                    top_k=settings["top_k"],
+                    top_p=settings["top_p"],
+                    temperature=settings["temperature"],
+                    repetition_penalty=settings["repetition_penalty"],
+                    pad_token_id=tokenizer.eos_token_id
+                )
+
+                generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+                print(generated_text)
+            except ValueError:
+                log.warning("Empty Input!\n")
+                time.sleep(0.5)
+                continue
 
     elif option == 2:
         # Change model generation settings
@@ -97,7 +103,7 @@ while option != 3:
             if parameter == 1:
                 # Change max_new_tokens
                 try:
-                    print(f"max_new_tokens\t current value: {settings["max_new_tokens"]}")
+                    print(f"max_new_tokens\t current value: {settings['max_new_tokens']}")
                     change = int(input("Enter a number: "))
 
                     if change < 1:
@@ -112,7 +118,7 @@ while option != 3:
             elif parameter == 2:
                 # Change do_sample
                 try:
-                    print(f"do_sample\t current value: {settings["do_sample"]}")
+                    print(f"do_sample\t current value: {settings['do_sample']}")
                     change = input("Enter T/F: ").upper()
 
                     if change != "T" and change != "F":
@@ -130,7 +136,7 @@ while option != 3:
             elif parameter == 3:
                 # Change top_k
                 try:
-                    print(f"top_k\t current value: {settings["top_k"]}")
+                    print(f"top_k\t current value: {settings['top_k']}")
                     change = int(input("Enter a number: "))
 
                     if change < 0:
@@ -145,7 +151,7 @@ while option != 3:
             elif parameter == 4:
                 # Change top_p
                 try:
-                    print(f"top_p\t current value: {settings["top_p"]}")
+                    print(f"top_p\t current value: {settings['top_p']}")
                     change = float(input("Enter a number: "))
 
                     if change < 0.0 or change > 1.0:
@@ -160,7 +166,7 @@ while option != 3:
             elif parameter == 5:
                 # Change temperature
                 try:
-                    print(f"temperature\t current value: {settings["temperature"]}")
+                    print(f"temperature\t current value: {settings['temperature']}")
                     change = float(input("Enter a number: "))
 
                     if change < 0.0 or change > 2.0:
@@ -175,7 +181,7 @@ while option != 3:
             elif parameter == 6:
                 # Change repetition_penalty
                 try:
-                    print(f"repetition_penalty\t current value: {settings["repetition_penalty"]}")
+                    print(f"repetition_penalty\t current value: {settings['repetition_penalty']}")
                     change = float(input("Enter a number: "))
 
                     if change < 1.0:
