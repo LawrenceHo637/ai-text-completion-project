@@ -4,6 +4,7 @@ This program uses Google's gemma-3-1b-it model.
 Using the program requires first logging in to your Hugging Face account:
 - pip install huggingface_hub
 - huggingface-cli login
+
 Using the gemma-3-1b-it model will also require filling out a consent form to Gemma's terms and conditions, which can be accessed at (https://huggingface.co/google/gemma-3-1b-it)
 
 ## Usage
