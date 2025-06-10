@@ -37,7 +37,7 @@ This program has the following dependencies:
 - torch library to run the AI model with the GPU if cuda is available.
 - logging library to display errors when invalid input or errors occur.
 - time library to ensure error messages are displayed before the program continues as usual.
-- triton,which the gemma-3-1b-it model uses
+- Triton, which the gemma-3-1b-it model uses
   - Supported Platforms:
     - Linux
   - Supported Hardware:
