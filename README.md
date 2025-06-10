@@ -7,12 +7,13 @@ Users can use the program by running the text_completion_app.py file. Once runni
 1. Enter Prompt
 2. Settings
 3. Exit
+
 Users can pick an option by inputing a corrsponding number (i.e., 1, 2, 3)
-1. Enter Prompt
+1. __Enter Prompt__
    - The program will ask the user to enter a prompt which will be sent to the AI model to generate a response.
    - The program will ensure the prompt is not empty and will continue to ask the user for a prompt unitl they type "exit."
    - Once the model generates a response, it will be printed to standard output for the user to see.
-2. Settings
+2. __Settings__
    - This option allows the user to change the model parameters.
    - Parameters include:
        - max_new_tokens         Controls response length
@@ -22,7 +23,7 @@ Users can pick an option by inputing a corrsponding number (i.e., 1, 2, 3)
        - temperature            Controls output randomness
        - repetition_penality    Helps avoid repetition by penalizing repeated phrases
    - The program will ensure the user's input is a valid value for each parameter.
-3. Exit
+3. __Exit__
    - Exits the program when selected by the user
 
 ## Dependencies
