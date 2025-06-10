@@ -21,12 +21,12 @@ Users can pick an option by inputing a corrsponding number (i.e., 1, 2, 3)
 2. __Settings__
    - This option allows the user to change the model parameters.
    - Parameters include:
-       - max_new_tokens         Controls response length
-       - do_sample              Enables sampling for creativity
-       - top_k                  Limits the model to sampling from the k most probable tokens at each generation step
-       - top_p                  Keeps the most probable tokens whose total probability mass exceeds p.
-       - temperature            Controls output randomness
-       - repetition_penality    Helps avoid repetition by penalizing repeated phrases
+       - max_new_tokens         (Controls response length)
+       - do_sample              (Enables sampling for creativity)
+       - top_k                  (Limits the model to sampling from the k most probable tokens at each generation step)
+       - top_p                  (Keeps the most probable tokens whose total probability mass exceeds p)
+       - temperature            (Controls output randomness)
+       - repetition_penality    (Helps avoid repetition by penalizing repeated phrases)
    - The program will ensure the user's input is a valid value for each parameter.
 3. __Exit__
    - Exits the program when selected by the user
