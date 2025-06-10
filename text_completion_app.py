@@ -104,12 +104,12 @@ while option != 3:
                 # Change max_new_tokens
                 try:
                     print(f"max_new_tokens\t current value: {settings['max_new_tokens']}")
-                    change = int(input("Enter a number: "))
+                    change = int(input("Enter a number (1 - 1024): "))
 
-                    if change < 1:
+                    if change < 1 or change > 1024:
                         raise ValueError
                 except ValueError:
-                    log.warning("Invalid Input! Please enter a positive whole number.\n")
+                    log.warning("Invalid Input! Please enter a whole number between 1 and 1024.\n")
                     time.sleep(0.5)
                     continue
                 else:
@@ -137,12 +137,12 @@ while option != 3:
                 # Change top_k
                 try:
                     print(f"top_k\t current value: {settings['top_k']}")
-                    change = int(input("Enter a number: "))
+                    change = int(input("Enter a number (0 - 200): "))
 
-                    if change < 0:
+                    if change < 0 or change > 200:
                         raise ValueError
                 except ValueError:
-                    log.warning("Invalid Input! Please enter a non-negative whole number.\n")
+                    log.warning("Invalid Input! Please enter a whole number between 0 and 200.\n")
                     time.sleep(0.5)
                     continue
                 else:
@@ -152,7 +152,7 @@ while option != 3:
                 # Change top_p
                 try:
                     print(f"top_p\t current value: {settings['top_p']}")
-                    change = float(input("Enter a number: "))
+                    change = float(input("Enter a number (0.0 - 1.0): "))
 
                     if change < 0.0 or change > 1.0:
                         raise ValueError
@@ -167,7 +167,7 @@ while option != 3:
                 # Change temperature
                 try:
                     print(f"temperature\t current value: {settings['temperature']}")
-                    change = float(input("Enter a number: "))
+                    change = float(input("Enter a number (0.0 - 2.0): "))
 
                     if change < 0.0 or change > 2.0:
                         raise ValueError
@@ -182,12 +182,12 @@ while option != 3:
                 # Change repetition_penalty
                 try:
                     print(f"repetition_penalty\t current value: {settings['repetition_penalty']}")
-                    change = float(input("Enter a number: "))
+                    change = float(input("Enter a number (1.0 - 2.0): "))
 
-                    if change < 1.0:
+                    if change < 1.0 or change > 2.0:
                         raise ValueError
                 except ValueError:
-                    log.warning("Invalid Input! Please enter a non-negative number greater than or equal to 1.0.\n")
+                    log.warning("Invalid Input! Please enter a number between 1.0 and 2.0 inclusive.\n")
                     time.sleep(0.5)
                     continue
                 else:
