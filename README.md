@@ -1,6 +1,10 @@
 # Capstone Project: AI-Powered Text Completion
 ## Setup
-This program uses Google's gemma-3-1b-it model, directly loaded from (https://huggingface.co/google/gemma-3-1b-it).
+This program uses Google's gemma-3-1b-it model.
+Using the program requires first logging in to your Hugging Face account:
+- pip install huggingface_hub
+- huggingface-cli login
+Using the gemma-3-1b-it model will also require filling out a consent form to Gemma's terms and conditions, which can be accessed at (https://huggingface.co/google/gemma-3-1b-it)
 
 ## Usage
 Users can use the program by running the text_completion_app.py file. Once running, the program will give the user three options to choose from:
